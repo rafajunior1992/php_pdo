@@ -10,20 +10,25 @@ $connection = ConnectionCreator::createConnection();
 $studentRepository = new PdoStudentRepository($connection);
 
 $connection->beginTransaction();
-$aStudent = new Student(
-	null,
-	'Nico Steppat',
-	new DateTimeImmutable('1985-02-02'),
-);
+try {
+	$aStudent = new Student(
+		null,
+		'Nico Steppat',
+		new DateTimeImmutable('1985-02-02'),
+	);
 
-$studentRepository->save($aStudent);
+	$studentRepository->save($aStudent);
 
-$anotherStudent = new Student(
-	null,
-	'Sergio Busquets',
-	new DateTimeImmutable('1985-02-02'),
-);
+	$anotherStudent = new Student(
+		null,
+		'Sergio Busquets',
+		new DateTimeImmutable('1985-02-02'),
+	);
 
-$studentRepository->save($anotherStudent);
+	$studentRepository->save($anotherStudent);
 
-$connection->commit();
+	$connection->commit();
+} catch (\RuntimeException $e) {
+	echo $e->getMessage();
+	$connection->rollBack();
+}

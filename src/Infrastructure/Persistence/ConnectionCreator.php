@@ -6,6 +6,9 @@ use PDO;
 class ConnectionCreator {
 	public static function createConnection(): \PDO{
 		$databasePAth = __DIR__ . '/../../../banco.sqlite';
-		return new PDO('sqlite:' . $databasePAth);
+		$connection = new PDO('sqlite:' . $databasePath);
+		$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+		return $connection;
 	}
 }
